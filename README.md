@@ -78,7 +78,7 @@ Branch rule: If search_listings returns an empty list, put a message in session[
 
 Where it lives: agent.py::run_agent
 
-How the query is parsed: The query will be parsed using simple string processing to extract the description, optional size, and optional maximum price. The parsed values are stored in session["parsed"].
+How the query is parsed: The query is parsed using regular expressions (regex) to extract the description, optional size, and maximum price. The parsed values are stored in session["parsed"].
 
 What moves through the session: The session stores the original query, parsed search values, search results, selected item, wardrobe, outfit suggestion, fit card, and any error message. Each step reads from the session and saves its result back into the session.
 
@@ -137,8 +137,8 @@ Scored these classic vintage Levi's 501 jeans in the best medium wash for just $
 **Moment 2**
 
 * **What I asked for:** I asked AI to help implement the `suggest_outfit` and `create_fit_card` tools while following their required return formats and empty-case behavior.
-* **What came back:** The implementation used the `generate()` model adapter, created separate prompts for normal and empty wardrobe cases, and returned a descriptive message for an empty outfit.
-* **What I changed:** I tested both normal and empty cases for each tool and checked the repeated fit-card output against the project's cache and temperature settings.
+* **What came back:** The suggested implementation called `generate()`, used the wardrobe items when available, gave general styling advice when the wardrobe was empty, and created a 2–4 sentence fit-card caption with the item, price, platform, and vibe.
+* **What I changed:** I implemented the suggestions and tested both the normal and empty-wardrobe cases. I also tested the fit card multiple times and checked `config.py` when the same response appeared repeatedly; the temperature was already 0.9, while caching was enabled by default.
 
 ---
 

@@ -47,37 +47,30 @@
 
 ## Tool Inventory
 
-<!-- Four lines per tool. This is worth 2 points and it's the single most
-     common place students lose them.
-
-     "Returns a list" earns NOTHING. The description has to say what is IN
-     the list.
-
-     The empty case isn't optional either — it's the thing your loop branches
-     on, and if you don't decide it here you'll discover it as a crash in
-     Milestone 5. -->
-
 ### `search_listings`
 
-- **What it does:**
-- **Inputs:** <!-- name and type each: `max_price` (float), not "a price" -->
-- **Returns:**
-- **When it has nothing:**
+- **What it does:** Searches the listings data for items matching a description, with optional size and maximum-price filters.
+- **Inputs:** `description` (str), `size` (str | None), `max_price` (float | None).
+- **Returns:** A list of matching listing dictionaries, each containing `id`, `title`, `description`, `category`, `style_tags`, `size`, `condition`, `price`, `colors`, `brand`, and `platform`, ordered by best match first and limited to the configured result limit.
+- **No matches:** Returns an empty list `[]`. Size matching is case-insensitive and treats the requested size as a distinct size component rather than an arbitrary substring.
 
 ### `suggest_outfit`
 
-- **What it does:**
-- **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+- **What it does:** Suggests one or two outfits using a new listing and the user's wardrobe.
+- **Inputs:** `new_item` (dict), `wardrobe` (dict).
+- **Returns:** A non-empty string containing outfit suggestions, using pieces from the user's wardrobe when available.
+- **Empty wardrobe:** Returns general styling advice for the new item instead of an empty string or an error.
 
 ### `create_fit_card`
 
-- **What it does:**
-- **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+- **What it does:** Creates a short social-media-style caption about the new clothing find and its suggested outfit.
+- **Inputs:** `outfit` (str), `new_item` (dict).
+- **Returns:** A 2–4 sentence string that mentions the item, its price, its platform, and the outfit's vibe, mentioning the price and platform once each.
+- **Empty outfit:** Returns a descriptive message instead of raising an error.
 
+### Branch Rule
+
+If `search_listings` returns an empty list, put a message in the session and stop. Otherwise, take the first result and pass it to `suggest_outfit`.
 ---
 
 ## Planning Loop

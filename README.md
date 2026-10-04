@@ -410,6 +410,27 @@ The one unsuccessful Criterion 4 try was caused by a temporary `503 UNAVAILABLE`
 The improvement was limited to one prompt, so the difference can be compared directly without changing multiple parts of the system at the same time.
 
 
+## Milestone 6 — What's Still Broken and Submit
+
+### What's Still Broken
+
+All five acceptance criteria met their targets in the final evaluation, so there are no criterion-level misses to fix right now.
+
+There are still some practical limitations. The agent depends on the model being available, so a temporary model outage or rate-limit can still cause a run to fail. I would improve this by adding retry or fallback handling around model calls, but I stopped here because the final evaluation met all five acceptance targets and this would be an additional improvement beyond the criteria.
+
+### MCP Move
+
+I moved `search_listings` from being called directly from `tools.py` to being exposed through the MCP server and called through `mcp_client.py`. The search behavior and evaluation results remained consistent after the MCP move; the agent still completed the expected tool sequence and handled empty searches correctly.
+
+### How I Used AI
+
+During Unit 4, I used AI to help me understand and troubleshoot the MCP implementation, review errors, and reason through the evaluation results. I also used AI to help identify a focused improvement for the fit-card prompt. I made the final code changes myself and ran the tests to verify that the changes worked.
+
+### Final Submission
+
+Repository: `https://github.com/Vig270/ai201-project2-fitfindr-starter-v2026`
+
+
 
 <!-- ═════════════════════════════════════════════════════════════════════
      SUBMISSION CHECKLIST — unit 3

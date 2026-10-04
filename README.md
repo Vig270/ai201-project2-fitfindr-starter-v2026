@@ -304,11 +304,70 @@ Result: completed — fit card generated.
 
 ---
 
-## What's Still Broken
+## Milestone 4 — Call Each Criterion and Diagnose Every Miss
 
-<!-- For each criterion still missed: what you'd do, and why you stopped where
-     you did. "I ran out of time" is fine if it's true. Pretending nothing is
-     left is not. -->
+### 1. A matching query completes all three tools — MET
+
+**Target:** At least 4 of 5 tries complete all three tools and return a fit card.
+
+**Result:** 5 of 5 tries passed.
+
+**How I decided:** Each try completed `search_listings`, `suggest_outfit`, and `create_fit_card`, and returned a fit card. The result is above the target of 4 of 5.
+
+---
+
+### 2. An impossible query stops before the second tool — MET
+
+**Target:** 5 of 5 tries stop before `suggest_outfit` and return a message naming what to change.
+
+**Result:** 5 of 5 tries passed.
+
+**How I decided:** Each impossible query returned an empty search result and the agent stopped before calling `suggest_outfit`. The response told the user to change the description, size, or maximum price.
+
+---
+
+### 3. Something about state — MET
+
+**Target:** 5 of 5 tries keep the same item ID in `session["selected_item"]` and `suggest_outfit`'s `new_item`.
+
+**Result:** 5 of 5 tries passed.
+
+**How I decided:** In every completed run, the selected item stored in the session was the same item passed to `suggest_outfit`.
+
+---
+
+### 4. Something about the fit card — MET
+
+**Target:** At least 4 of 5 tries produce a 2–4 sentence fit card mentioning the item's name, price, and platform.
+
+**Result:** 4 of 5 tries passed.
+
+**How I decided:** Four tries produced fit cards that met the content target. One try failed because the model returned a temporary `503 UNAVAILABLE` error. Since the target was at least 4 of 5, the criterion was still met.
+
+**Miss diagnosis:** The miss happened at the **model output** step. The agent reached the fit-card generation step, but the external model was temporarily unavailable. This was not caused by the search tool, the agent loop branch, or session state.
+
+---
+
+### 5. Your choice — MET
+
+**Target:** 5 of 5 tries return listings at or below the requested maximum price.
+
+**Result:** 5 of 5 tries passed.
+
+**How I decided:** Every returned listing for the maximum-price test was at or below the requested price of $30.
+
+---
+
+### Overall Diagnosis
+
+All five acceptance criteria met their original targets. There was one failed try during Criterion 4 because of a temporary model availability error, but the criterion's 4-of-5 target was still satisfied.
+
+I did not find a repeated failure pattern in the tool calls, agent loop, or session state. The only observed failure was an external model-availability issue during fit-card generation.
+
+The criterion whose result surprised me most was **Criterion 4**. I expected model-generated fit cards to have some variability, and one run was interrupted by a `503 UNAVAILABLE` response. However, 4 of 5 successful tries still met the target.
+
+Because all criteria met their targets, the targets were reasonable rather than too low. If I tightened one target in a future iteration, I would tighten **Criterion 1** from 4 of 5 to 5 of 5 after seeing that the tested matching query completed successfully in all five tries. I would keep Criterion 4 at 4 of 5 because it depends on an external model whose availability can vary.
+
 
 <!-- ═════════════════════════════════════════════════════════════════════
      SUBMISSION CHECKLIST — unit 3

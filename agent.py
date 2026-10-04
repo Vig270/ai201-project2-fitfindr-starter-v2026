@@ -154,6 +154,16 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         },
     )
 
+    trace.step(
+    "search_listings",
+    {
+        "description": description,
+        "size": size,
+        "max_price": max_price,
+    },
+    session["search_results"],
+    )
+
     # Branch: stop if there are no results
     if not session["search_results"]:
         session["error"] = (
@@ -171,10 +181,28 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         session["wardrobe"],
     )
 
+    trace.step(
+    "suggest_outfit",
+    {
+        "new_item": session["selected_item"],
+        "wardrobe": session["wardrobe"],
+    },
+    session["outfit_suggestion"],
+    )
+
     # Create the fit card
     session["fit_card"] = create_fit_card(
         session["outfit_suggestion"],
         session["selected_item"],
+    )
+
+    trace.step(
+    "create_fit_card",
+    {
+        "outfit": session["outfit_suggestion"],
+        "new_item": session["selected_item"],
+    },
+    session["fit_card"],
     )
 
     return session

@@ -222,16 +222,24 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     if not outfit.strip():
         return "No outfit suggestion is available to create a fit card."
 
+
     prompt = f"""
-    Write a short social media caption about this thrifted clothing find.
+        Create a short social media caption for this thrifted clothing find.
 
-    Item: {new_item["title"]}
-    Price: ${new_item["price"]:.2f}
-    Platform: {new_item["platform"]}
-    Outfit suggestion: {outfit}
+        Item name: {new_item["title"]}
+        Price: ${new_item["price"]:.2f}
+        Platform: {new_item["platform"]}
+        Outfit suggestion: {outfit}
 
-    Write 2–4 sentences. Mention the item, price, and platform once each.
-    Describe the overall vibe of the outfit and make the caption sound natural.
-    """
+        Requirements:
+        - Write exactly 2–4 complete sentences.
+        - Mention the item name, exact price, and platform.
+        - Mention each of those details once.
+        - Describe the outfit's overall vibe.
+        - Make it sound natural and social-media friendly.
+        - Do not add a heading, bullet points, or extra explanation.
+        """
+    
+
 
     return generate(prompt)
